@@ -1,0 +1,1 @@
+-Falta lectrura y escritura de a txt, con transformacion ascii-

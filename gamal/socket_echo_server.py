@@ -12,11 +12,11 @@ sock.bind(server_address)
 
 # Datos del Server (receptor del mensaje)
 # Primo
-p = 107
+p = 4987
 # Generador
-g = 64
+g = 2464
 # Valor A del receptor
-a = 35
+a = 135
 # Key
 k = (g**a) % p
 
@@ -39,14 +39,13 @@ while True:
         # Receive the data in small chunks
         while True:
             data = connection.recv(16)
-            print('received {!r}'.format(data))
             if data:
                 cm = data.decode("utf-8").split("|")
-                
+
+                # Revisamos si llego más mensaje
                 if cm[1][len(cm[1])-1] != "]":
                     while True:
                         data = connection.recv(16)
-                        print('reciviendo data adicional {!r}'.format(data))
                         if data:
                             cm[1]+= data.decode("utf-8")
                         else:
@@ -57,16 +56,19 @@ while True:
                     # Preparamos los datos recividos
                     y1 = int(cm[0])
                     y2 = cm[1]
-                    
+
+                    # Desencriptamos el mensaje y transformamos de ascii a texto
                     mtrad = ""
                     for j in y2:
                         m = ((y1**(p-1-a))*j)%p
                         mtrad += chr(m)
-                        
+
+                    print('recivido:',mtrad)
                     txt = open("mensajerecibido.txt","w")
                     menEntrtxt = txt.write(mtrad+"\n")
                     txt.close()
                 except:
+                    # Espero que nunca salga
                     print("ha ocirrido un error de formato")
             else:
                 print('no data from', client_address)

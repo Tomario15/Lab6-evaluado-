@@ -11,12 +11,13 @@ sock.connect(server_address)
 
 # Datos del Client (emisor del mensaje)
 # Valor B del emisor
-b = 15
+b = 215
 # Mensaje
 txt = open("mensajeentrada.txt","r")
 m = txt.read()
 txt.close()
 
+# Traducimos el texto a ascii
 mascii = []
 for i in m:
     mascii.append(ord(i))
@@ -33,14 +34,18 @@ try:
         amount_received += len(data)
         print('received {!r}'.format(data))
     ms = data.decode("utf-8")  #mensaje de server
-    
+
+    # Revisamos si el mensaje obtenido es la llave publica
     if len(ms.split(","))== 3:
         try:
+            # Creamos las variables
             g = int(ms.split(",")[0])
             p = int(ms.split(",")[1])
             k = int(ms.split(",")[2])
             
             y1 = (g**b)%p
+
+            # Encriptamos el mensaje
             y2 = []
             for i in m:
                 y2.append(((k**b)*i)%p)
